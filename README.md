@@ -10,4 +10,4 @@ Gestion de projets, des tâches, des tickets...
 [Paul Reinhardt](https://www.anthedesign.fr/author/paul-reinhardt/)
  
 ![Project View UI](/public/WorkinWeb_Project-Single_v1.0.png?raw=true "Project View")
-UI Design by Nazmi Aydogdu - 2015
+*UI Design by Nazmi Aydogdu - 2015*
