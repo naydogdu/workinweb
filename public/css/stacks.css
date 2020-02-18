@@ -1,0 +1,66 @@
+/*---
+*** MAIN NAVIGATION ----- views/template/nav/menu.blade.php
+---*/
+
+#main-nav-menu-toggle { border-radius: 1px; }
+#main-nav-menu-toggle.toggled-on { box-shadow: 0 0 0 1px #fff inset; }
+#main-nav-menu-toggle > i.fa { text-align: center; width: 16px; }
+#main-nav-menu-toggle.toggled-on > i.fa.fa-bars:before { content: '\f00d'; }
+#main-nav-menu-toggle.toggled-on:hover { box-shadow: 0 0 0 1px #3F6B6F inset; }
+
+#main-nav-menu { display:none; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);}
+#main-nav-menu.toggled-on { display:block; }
+
+#main-nav-menu a { line-height: 1.7; }
+#main-nav-menu a i { margin-right: 8px; }
+
+/* formulaires */
+.close-icon {
+  border-radius: 100%;
+  font-weight: 700;
+  height: 20px;
+  line-height: 1;
+  padding: 0;
+  text-align: center;
+  width: 20px; border:none;
+}
+.close-icon:hover { background: #E64459; }
+
+/* Avatar selector */
+input.picto { opacity: 0; position: absolute; }
+.picto + label { display: inline-block; vertical-align:top;  border: 3px solid transparent; }
+.avadel-area { border: 3px solid transparent; }
+.picto + label { border-radius: 100%; }
+input:checked + label { border-color: #a5cc55; }
+.form-group.avadelete { padding: 0; }
+.hw80.dis-ib.avadel-area { height: 86px; width: 86px; }
+.avadelete .close-icon { margin: 60px 0 0 -4px; }
+
+/* itemlists */
+.itemlist .btn.bg-ko {
+  border-radius: 2px 0 0;
+  bottom: 0; opacity: 0;
+  position: absolute;
+  right: -24px;
+  background: transparent; color: rgba(0,0,0,0.2); border-color: rgba(0,0,0,0.1);
+  border-right: none; border-bottom: none;
+}
+.itemlist:hover .btn.bg-ko { opacity: 1; }
+.itemlist .btn.bg-ko:hover { color: #CB364A; }
+.itemlist .btn.bg-ko label { font-size: 12px; }
+.itemlist input:checked + .btn.bg-ko { background: #CB364A; color: #fff; opacity: 1; }
+h5.username + div.clear { margin-top: 5px; }
+
+/* tasks */
+.hw40 > span > i { font-size: 22px; line-height: 40px; }
+
+.percentage-value.afterhover {
+  background: #fff none repeat scroll 0 0;
+  border-radius: 3px;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.15);
+  font-size: 14px;
+  font-weight: 700;
+  margin-top: -22px;
+  padding: 6px;
+  right: 24px;
+}

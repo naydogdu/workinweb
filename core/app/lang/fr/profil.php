@@ -1,0 +1,30 @@
+<?php 
+
+return array(
+
+	'updated'				=> 'Votre profil a été mis à jour',
+	'editProfil'			=> 'Mon profil',
+	'viewProfil'			=> 'Visualiser',
+	'firstName'				=> 'Prénom',
+	'lastName'				=> 'Nom',
+	'occupation'			=> 'Profession',
+	'birthday'				=> 'Date de naissance',
+	'edit'					=> 'Edition du profil',
+	'editAccount'			=> 'Modification du compte',
+	'avaGalery'		 		=> 'Galerie d\'avatar',
+	'addAvatar' 			=> 'Ajouter un avatar',
+	'gender'				=> 'Sexe',
+	'update'				=> 'Mettre à jour',
+	'male'					=> 'Homme',
+	'female'				=> 'Femme',
+	'other'					=> 'Autre',
+	'notSpecified'			=> 'Non renseigné',
+	'areYouSureDeleteAvatar' => 'Êtes vous sur de vouloir supprimer cette image ?',
+	'deleted'        		=> 'L\'avatar a été supprimé',
+	'submit'				=> 'Envoyer',
+	'avatar'				=> 'Avatar',
+	'delete'				=> 'Supprimer',
+	'profil'				=> 'Profil',
+	'view'					=> 'Voir le profil',
+	'yearsOld'              => 'ans',
+	);

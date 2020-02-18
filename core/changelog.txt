@@ -1,0 +1,597 @@
+﻿/*** v0.10, Nazmi Aydogdu, 22/01/2015 ******************************/
+
+1/ Ajout du sous-dossier "core" à la racine regroupant tous les fichiers/dossiers excepté le dossier "public"
+- Modification de 'public/index.php'
+- Modification de 'core/bootstrap/paths.php'
+
+2/ Modification de la structure des vues dans 'app/views'
+
+3/ Nommage de controllers
+
+4/ Organisation du contenu de 'app/route.php'
+
+
+
+/*** v0.11, Paul Reinhardt, 23/01/2015 ******************************/
+
+Modifs effectuées à énumérer.
+
+1/ 	Ajout du model Role pour la table roles_meta
+	Suppresion du model connection
+
+2/  Modification du fichier Lib/gestion/UserGestion.php
+	- Edit modifier pour pouvoir afficher la liste des roles
+	- Update modifier pour pouvoir changer le role de l'utilisateur
+
+3/ 	Correction du bug au niveau de la suppresion 
+	l'erreur venait du faite que chaque champ users possède un champ users_profils
+	J'ai donc rajouté un trigger (évenement) sur la table users pour supprimer automatiquement le champ profil de l'utilisateur
+
+4/ 	Modification du fichier route
+	Suppression des routes getRemind, getReset, getRegister
+	Elles sont maintenant gérées dans getLogin de AuthController
+
+	/*** v0.12, Nazmi Aydogdu, 24/01/2015 ******************************/
+
+1/  Modification des vues :
+	app/views/admin/index.blade.php // message de session
+	
+2/  AdminController : Modification des Lang:get('login.*')par Lang:get('admin.*')
+	Ajout d'une réponse pour 'public function destroy($id)'
+	Modification également du contenu de lang/fr/login.php et lang/fr/admin.php en rapport avec les modifs du AdminController
+
+3/  PublicController : modif de 'public function getProfilEdit()'
+
+4/  Projets :
+	Ajout du Model Project + Route 'project' + Controller 'ProjectController'
+	Ajout des vues app/views/project
+
+/*** v0.13, Paul Reinhardt, 27/01/2015 ******************************/
+
+1/ Ajout : 
+	- Models : Profil
+	- Gestion : ProfilGestion.php, ProfilGestionInterface.php
+
+2/ Ajout des triggers dans migration create_triggers
+
+3/ 	PublicController : getProfilEdit() devient edit() et change
+	PublicController : Création de update (fonctionne, sauf l'avatar)
+
+4/ 	- Ajout view show.blade.php dans profil
+	- Ajout de show dans PublicController et ProfilGestion
+	- Ajout du bouton Profil dans home.blade.php
+
+5/ 	- Modification de show dans admin pour afficher les informations du profil	
+
+6/ Ajout des préfixes ww_
+
+
+/*** v0.14, Paul Reinhardt, 28/01/2015 ******************************/
+
+1/ 	PublicController : Correction des liens Edit et profil
+	PublicController : Création de destroy
+
+2/ 	ProfilGestion : Modification de edit, show, destroy, update
+
+3/	Modification de Edit.blade.php dans public/profil/edit
+	Modification de Show.blade.php dans public/profil.edit
+
+4/ Gestion des avatars finis à 85% (fonctionne, mais quelques cas de figure à gérer)
+
+5/ Fichier migration foreign keys modifié. (ajout de ->onDelete('cascade') sur la table upload_profil
+
+/*** v0.15, Paul Reinhardt, 29/01/2015 ******************************/
+
+1/ 	ProfilGestion : Modification de destroy, afin de mieux gérer la suppression des avatars
+	Attention à bien modifier post_max_size = dans php.ini (sinon une erreur s'affiche quand un fichier est trop volumineux)
+	La gestion des avatars et du profil semblent être finis pour le moment.
+
+2/ 	Création de ProfilController, et transfert des controls show, edit, update et destroy de publicController à ProfilController
+
+3/ 	Ajout de label sur les images dans profil.edit
+
+4/ 	Création d'un dossier js dans public et un fichier project.js
+
+5/ 	Création de ProjectGestion.php et ProjectGestionInterface.php
+	Création de ProjectCreateValidator
+	Home.blade.php : Ajout d'un bouton pour accéder au projet
+
+	ProjectController : modification de create et store
+	view projet : Modification de create.blade (possibilité de créer un projet simple, sans users)
+	
+
+/*** v0.155, Nazmi Aydogdu, 29/01/2015 ******************************/
+
+1/  app/views/public/profil/edit.blade.php 
+		=> Ajout du message d'erreur pour occupation + balisage
+	app/lib/Validation/ProfilUpdateValidator.php 
+		=> suppression des limitations type alpha ou alpha_dash pour nom, prénom & occupation (alpha ou alpha dash n'accepte pas les espaces)
+
+2/  app/views/template/head.blade.php
+		=> linking js + font-awesome.css
+	app/views/template/nav/menu.blade.php
+		=> restructuration du menu + ajout de liens
+		
+3/	app/lang/nav.php => ajout de traductions projectLink, taskLink, ticketLink
+
+4/  Modifs CSS public/css/ww.css + stacks.css
+	 => Ajout dossier : js + fonts
+	 => Ajout de fichier : css/font-awesome.min.css, js/global.js
+	 => Modif de css/img/logo.png (hauteur et centrage vertical)
+
+/*** v0.16, Nazmi Aydogdu, 29/01/2015 ******************************/
+
+1/  Dossier Public : Maj CSS -> ww.css + stacks.css
+2/  Dossier Public : Maj JS -> global.js
+3/  Maj views : home.blade + template/nav/menu.blade + public/profil/edit.blade
+4/  Maj fichier lang : admin.php + public.php
+
+/*** v0.17, Paul Reinhardt, 30/01/2015 ******************************/
+
+1/ 	Maj fichier lang : nouveau fichier profil.php contenant l'ensenmble des mots profils qui était dans public.php
+
+2/ 	Modification du modèle user, permission, et project
+
+3/ 	ProjectGestion 	=> Modification de store($id)
+					=> Création de index($id)
+
+4/ 	ProjectController 	=> Modification de index($id), affiche désormais seulement les projets liées au compte utilisateur.
+						=> Modification de show($generated_url), ajout d'un filtre au sein du controller show.
+
+5/ 	Modification des Foreigns Keys (ajout de deleteOn('cascade')) pour faciliter la suppression des projets
+	Bouton supprimer pour les admins sur un projet
+
+/*** v0.17.5, Paul Reinhardt, 02/02/2015 ******************************/
+
+1/ 	Database : 	modification de projects_relation, suppression de l'id, les 2 clés étrangères (project_id et user_id) forment mtn la clé primaire de la table
+				renommage de la colonne 'users_id' dans la table users_profils en 'user_id'
+
+2/ 	Mise à jour du code de edit profil (au niveau des requetes, ProfilGestion.php -> update et de la view)
+						de show profil (ajout de fonction dans les modèles Upload et Profil)
+						de show d'admin (au niveau de show userGestion et de la vue show admin)
+
+3/ Helper : get_auth_avatar, ajout d'un avatar par défaut
+			Modification du get_auth_avatar
+
+4/ Modification de create project
+
+/*** v0.18, Nazmi Aydogdu, 02/02/2015 ******************************/
+
+1/  Restructuration Tables & Models
+
+	=> Renommage de certaines tables (users_profils devient profils, roles_meta devient roles)
+	   & colonnes (roles_meta_id devient role_id, users_id devient user_id, etc...)
+	   afin de faciliter la mise en relations dans les modèles et mieux s'y retrouver.
+	   
+	=> Ajout Table + Model Society, mise en relation avec users. Routes & controllers à venir.
+	=> Ajout de society_id dans la table 'users'
+	
+	=> Modification des mises en relations dans Models ===> PAS FINI
+		=> Suppression de Model/Permission (les permissions concernent uniquement la relation user < -> project)
+		=> Analyse bien les modèles et la structure des tables pour comprendre 
+		   quelle propriété utiliser dans quel contexte.
+		
+		/**********
+			Par exemple la table 'users' contient 'role_id' & 'society_id' mais ne contient pas 'profil_id', 
+			c'est 'profils' qui contient 'user_id'. C'est pourquoi dans model/User
+			
+			fonctions role() & society()   ==> belongsTo()
+			           fonction profil()   ==> hasOne()
+			
+			à l'inverse dans model/Society & model/Role on a hasMany('User') 
+			et dans model/Profil on a belongsTo('User')	 
+
+			Du coup pour les uploads on pourrait voir pour utiliser une relation polymorphique, ce qui nécessitera de
+			revoir la structure des tables (ex. un Upload peut être attaché à un ID foreign type User ou Project) pour
+			au final économiser en nb de tables, nb de dépendances, etc...
+			http://docs.laravel.fr/4.1/eloquent#polymorphic-relations
+			Ca facilitera énormément la tâche quand il faudra gérer les	uploads dans un projet, dans une tâche, etc...
+		************/
+		
+2/  Modification de lib/gestion/UserGestion@show() et views/admin.show 	
+
+	=> Bien analyser l'appel Bdd dans lib/gestion/UserGestion@show pour mieux apréhender la logique de Laravel, 
+	   notamment les propriétés dynamiques (ex. User::with('profil')->find($id) ),
+	   et en profiter pour optimiser lib/gestion/UserGestion@edit. Voir views/admin.show pour voir comment se
+	   récupère les résultats 
+	   /****
+	     (ex. $user->role est un tableau, pour afficher le rôle c'est $user->role->role ou $user->role->id)
+		 Par exemple là on se rend compte que la colonne 'role' dans 'roles' 
+		 aurait du se nommer "name" par exemple, ce qui donnerait $user->role->name), plus cohérent. A corriger.
+		 Donc attention à la logique dans le nommage.
+	   *****/
+	=> views/admin.show => Incomplet, je me suis contenté de corriger l'affichage des variables
+
+/*** v0.18.5, Paul Reinhardt, 03/02/2015 ******************************/
+
+1/ userGestion.show et view show modifié (suppression du select dans edit)
+
+2/ id rajouter dans l'url générée des projets (devant)
+
+3/ 	Ajout de softdelete sur les projets 
+	Ajout des brouillons dans index projects et possibiliter de supprimer définitivement un projet.
+
+4/ 	Ajout de la table types_projects, et d'une colonne type_project_id dans projects.
+	Ajout d'un seeder pour types_projects (Web, App mobile, Print)
+
+	/*** v0.19, Paul Reinhardt, 04/02/2015 ******************************/
+
+1/ 	Filtre ajouté au niveau de ProfilController@edit (les administrateurs peuvent allez d'une édition de profil à une autre)
+
+2/ 	Modification du model Project, de project.show
+	Seul le créateur et un administrateur peuvent mettre en corbeille, supprimer ou restaurer un projet
+
+3/ 	Ajout des Types de projects dans project.create (maintenant chaque projets possède un type)
+	Modification de ProjectGestion.create et ProjectGestion.store
+
+4/	Ajout d'un helper getRoleById() ,checkAvatarId($id) et  getPermission($id, $url)
+
+5/ 	Création de la view edit project. 
+	Modification de ProjectGestion.update
+	Actuellement possible de changer la description et le titre (name) du projet
+	Possible aussi de changer le role des participants (sauf celui de chef de projet pour le moment)
+
+/*** v0.19.5, Paul Reinhardt, 05/02/2015 ******************************/
+
+1/ 	Modification de ProjectGestion.edit
+					ProjectGestion.update
+					la view : project.create
+	Maintenant possible, d'ajouter un participant, de changer les droits, ou de supprimer un participant
+					Changer de chef de projet est possible (dans l'optique d'un chef de projet par projet)
+					Le précédent chef de projet devient alors intervenant
+	Ajout de date de début du projet et date de fin. (impossible d'avoir une date de fin inférieur à une date de début)
+
+2/ 	Bdd : Ajout de la colonne begin_date et end_date dans projects
+
+3/ 	Helpers : ajout de getChiefProjectId($id), qui permet d'obtenir l'id du chef de projet en fonction de l'id du projet
+
+4/ 	Modification mineur :
+		la view project.index, brouillons n'apparait pas si il n'y en a pas 
+		La view project.show, affiche la date de début et de fin
+
+/*** v0.19.6, Paul Reinhardt, 06/02/2015 ******************************/
+
+1/ 	Gestion des jours : 
+		Editions de la date de fin et la date de commencement
+		Affichage de la durée en jour du projet
+
+2/ Helpers fonctions pour les jours :
+		function dateDiff($date1, $date2), permet de retourner la durée globale d'un projet (en jour)
+		function pourcentageDate($durationProject, $timeLeft), qui viens compléter dateDiff. Retourne une pourcentage
+			en fonction de la durée restante et la durée du projet (par exemple) 
+
+/*** v0.20, Nazmi Aydogdu, 07/02/2015 ******************************/
+
+1/  Modifs de vues
+		views/admin.index => balisage session::status
+		views/public.profil.edit => balisage session::status
+		views/project.edit => balisage global + stylisations + modifs mineurs (genre radio par défaut sur intervenant)
+		views/project.show => balisage + stylisations + modifs mineurs
+		views/project.create => balisage + modifs mineurs
+		views/template.head (ordre d'appel des css)
+		
+2/	public/css/ : ww.css + stack.css + font-awesome.min.css mis à jour
+	public/js/  : global.js mis à jour
+
+3/  ajout de traductions dans app/lang/fr/project.php et public.php
+
+4/  Helpers fonction checkPublicName($id), détecte si l'utilisateur a renseigné un nom ou prénom, 
+		si oui renvoi ce qui est renseigné, si non retourne false
+		
+5/ Modification app/database/migrations -> 
+	users, ajout de society_id foreign
+	tickets, ajout de ticketable_id et ticketable_type, en vue d'un morphToMany
+	foreign keys, suppresion de creator_id comme foreign (pas besoin), ajout de users.society_id foreign
+	
+	modif app/database/seeds -> User + Society + Ticket
+	
+6/  app/models : 
+		création Ticket => morphTo ticketable()
+		modif Project, Upload => ajout tickets() ( morphMany ticketable() )
+		
+A venir -> Gestion des sociétés & tickets
+
+/*** v0.21, Paul Reinhardt, 09/02/2015 ******************************/
+
+1/ 	Modification dans projectGestion.index, ajout de orderBy sur le begin_date. 
+
+2/	Modification de la table projects et foreign key (migration), ajout de society id
+	Modification des seeders project/projectRelation/User
+
+3/ 	Modification de projectGestion create et edit, il ne s'affiche désormais plus que les personnes appartenant à la même
+	société.
+
+4/ 	Helpers getSocietyId() ajouté, permettant de retrouver l'id société de l'utilisateur.
+
+/*** v0.22, Nazmi Aydogdu, 09/02/2015 ******************************/
+
+1/	app/database/migrations 
+		Ajout tasks, task_user, task_project. Modif foreign_keys
+	app/database/seeds
+		Ajout TaskSeeder + TaskProject + TaskUser. Modif DatabaseSeeder
+
+2/	modif app/lig/Gestion/ProjectGestion@show() -> ajout de with('tasks')
+
+3/  Models : Modif Project + User. Création du modèle Task.
+
+4/  modif de app/views/project.show : affichage des variables $project->tasks
+
+5/ Copie des public/css + js de la 0.2 non pris en compte 
+
+/*** v0.23, Reinhardt Paul, 10/01/2015 ******************************/
+
+1/	Nouveau Controller : TaskController
+	Nouveau lib/Gestion : TaskGestion et TaskGestionInterface
+	Nouveau lib/validation : TaskCreateValidator
+	Nouvelle view : task/create
+					task/edit
+
+2/ 	création dans TaskGestion : create, store, edit, update
+	Ajout dans TaskController : create, store, edit, update
+
+/*** v0.24, Nazmi Aydogdu, 11/02/2015 ******************************/
+
+1/  Model : Project->tasks reçoit un join user
+
+2/  helpers : get_auth_avatar devient getAvatar($id, $class).
+	=> (int) $id : Facultatif, renvoi Auth::id() si non renseigné
+	=> (string) $class : Facultatif. Gère l'attribut class de la div. Renvoi 'dis-ib round hw40 divbg' si non renseigné
+	
+	Désormais un getAvatar($id) suffit, plus besoin de faire des if else pour afficher l'avatar.
+	Les vues utilisant get_auth_avatar ont été adapté.
+	views/	-> project.edit, project.create, project.show
+			-> template.header
+			-> task.create, task.edit
+			-> profil.show
+
+3/  dans views/project.show, affichage des infos relatifs à l'user d'une tâche.
+
+/*** v0.24.5, Reinhardt Paul, 11/02/2015 ******************************/
+
+1/	Avant pour créer une tache ou la modifier, l'id project était passer en variable de session. Maintenant c'est une variable get
+	pour l'ensemble des pages tasks
+
+2/	Modèle project : Modification de tasks() => ajout de id et title dans le select
+
+3/	Modification des views 	Project : Show (ajout de bouton supprimer et de création de nouvelle tâches), edite, create
+							Tasks 	: Edit, create
+		pour edit et create task, seulement les personnes du projets apparaisent. (et non de la société)
+
+4/ 	Ajout des brouillons des tâches ainsi que de la restauration. 
+
+/*** v0.25, Reinhardt Paul, 12/02/2015 ******************************/
+
+1/ 	Modification de show project : 
+			Model Project : tasks() modifier
+			ProjectGestion : Modification de show($generated_url)
+				Maintenant, on retourne, le projet, contenant les tâches (withTrashed), et chacun des tâches possèdent ses utilisateurs.
+
+2/ 	Modification de destroy de TaskController (correction de la requête permettant de détacher les utilisateurs de la tâche)
+
+3/ 	Modification de edit Task :
+			TaskGestion : Modification de edit() -> ajout de $profil->project = Project::find($idProject); permettant d'avoir les informations du projets
+			View edit Task : Ajout d'un bouton retour, pour revenir sur le projet
+
+4/ 	Modification de Home : 
+			view home affiche désormais les tâches de l'utilisateur connecté
+			ainsi que les tâches abandonnée
+			Création de PublicGestion et PublicGestionInterface
+	Helpers : getUrlProject($idUser, $idTask) créer pour récupérer les url des projets à partir d'une tâche et d'un utilisateur
+
+/*** v0.26, Reinhardt Paul, 13/02/2015 ******************************/
+
+1/ 	Migration :	Création de la table status_tasks
+				Création du fichier seed pour status_tasks
+				Ajout clé étrangère dans la table task_project
+				Modification de la colonne status dans task_project qui devient status_id
+				Correction dans le code pour fonctionner avec la nouvelle clée étrangère.
+
+2/ 	Helpers : getStatusTask($idStatus) qui retourne le status de la tâche
+
+3/	Show Project : Modification de show project
+	Edit Task 	 : Modification de edit task, il est possible de changer le status de la tâche.
+
+4/ 	Ajout d'un filtre sur create task (dans TaskController@create), la création de tâche est accecible des admins et des chef de projet
+
+5/ 	Suppression d'un projet corriger, les tâches sont aussi retirer des utilisateurs du projet
+	
+/*** v0.27, Nazmi Aydogdu, 15/02/2015 ******************************/
+
+1/  views/project.show
+
+2/  helpers : adding getUserEmail
+			  edit checkPublicName
+			  edit getStatusTask
+
+/*** v0.28, Reinhardt Paul, 16/02/2015 ******************************/
+
+1/	helpers : getSocietyName
+			: getProjectsUser
+			: getTasksUser
+			: checkTaskUser($id)
+
+2/ 	Admin 	: Création des dossiers user et project
+			  Transfert des fichiers admin dans admin/user
+
+			  Modification de admin/user/show
+			  Modification de admin/user/edit
+			  Modification de admin/user/index ainsi que : UserGestion@index
+			  		Utilisateur classé par société + liste admin + list user sans société
+
+3/	Ajout route User + nouveau controller UserController
+
+4/ 	Database : Users table (ajout de nullable() et default(null) sur society_id)
+			  
+/*** v0.29, Nazmi Aydogdu, 16/02/2015 ******************************/
+
+1/  helpers : modif de getStatusTask()
+
+2/  views/ : project.show --> structure & balisage
+			 task.edit, task.create --> structure & balisage
+
+3/  public/css --> maj de ww.css & stacks.css
+
+4/  Model : Task -> ajout de tickets()
+		    Project -> modif de tasks()
+		   
+5/  lib/Gestion/ProjectGestion@show -> ajout de with('tickets')
+
+6/  lang/ -> modif de fr/project.php + fr/task.php
+
+7/  routes.php --> ajout de /ticket/
+	création de TicketController + views/ticket.show
+
+8/  Correction de TicketTableSeeder dans app/database/seeds (contenu de ticketable_type au singulier)
+
+/*** v0.30, Reinhardt Paul, 17/02/2015 ******************************/
+
+1/	Création du controller : ProjectAdminController 
+							création de admin/project/index
+	Lib/gestion/ProjectAdminGestion créé -> index
+
+	Création du controller : SocietyAdminController
+							création de admin/society/index
+									 de admin/society/show
+									 de admin/society/create
+	Lib/gestion/SocietyAdminGestion créé -> index, show, create, store
+
+2/ 	Helpers : 	getTypeProject
+				getNumberPeopleProject (donne le nombre de personne sur un projet)
+				getNumberTasks (donne le nombre de tâche sur un projet)
+
+3/ 	Model : society ajout de projects() et project ajout de society()
+			Ajout dans Project : nbTasks() une variante de tasks (utiliser par le helpers::getNumberTasks)
+
+4/	Correction : Ajout de l'id société du créateur d'un projet, lors de la création d'un projet (qui par défaut était à 1)
+				 (provoquera probablement un bug si l'utilisateur n'est pas dans une société)
+				helpers::getPermission() renvoie null si la réponse est vide. (plutôt que de tout faire planté)
+
+5/	admin/user/edit possibilité de changer le mot de passe d'une personne.
+
+6/	Modification du fichier route (Réduction du nombre de route Restfull de ProjectAdminController et AdminController)
+
+/*** v0.31, Reinhardt Paul, 18/02/2015 ******************************/
+
+1/ 	Model : society ajout de user() (pour retrouver un créateur de société)
+
+2/ 	Helpers: 	getOwnerSociety (permet d'obtenir le possédeur d'une entreprise)
+				checkIfOwnerSociety (permet de savoir si un utilisateur possède une société)
+
+3/ 	Admin/user/index : On ne peu plus supprimer un utilisateur à la tête d'une société
+
+4/ 	Ajout de SocietyAdminController@destroy (supprime une entreprise, et set à null society_id de chaque personne qui était dans l'entreprise)
+
+5/ 	SocietyAdminController : @invitationMail($pswd), @edit et @update
+	Création de la view admin/society/edit
+	Lib/gestion/SocietyAdminGestion créé -> edit, update, destroy
+		Possibilité  de retirer ou d'ajouter un utilisateur à une entreprise et de changer le responsable de la société.
+		Possibilité  d'inviter une personne dans sa société sur workinweb. (cela créé un compte automatiquement avec la société)
+
+6/	Ajout dans UserGestion, storeInvitation($pswd, id)
+	Modification dans UserGestion, update
+
+7/ 	Ajout dans view public/profil/edit, d'une partie pour changer son mot de passe.
+
+8/	Correction UserGestion.update (si le mot de passe était laissé vide, il était remplacé par un mdp vide)
+
+/*** v0.32, Reinhardt Paul, 19/02/2015 ******************************/
+
+1/ 	Amélioration de la partie modification du compte sur edit profil :
+		- Modif -> userUpdateValidator
+				-> userController@update
+				-> public.profil.edit
+
+2/ 	Amélioration de la partie modification du profil sur edit profil :
+		- Modif -> profilgestion.update
+		Il n'y a plus de valeur vide qui s'enregistre dans la table profil, mais des valeurs NULL.
+
+3/ 	Amélioration/changement dans la partie Projet.
+		- Modif -> ProjectGestion.store
+				-> ProjectGestion.update
+				-> project.show (statistiques en fonction d'un projet avec ou sans date)
+				-> project.create (view)
+				-> project.edit (view)
+	Changement au niveau des tâches
+		- Modif -> task.create (sur les dates)
+				-> task.edit (view)
+				-> TaskGestion.update 
+				-> TaskGestion.store
+
+4/ 	Ajout helpers 	checkEndDateProject($idProject) -> qui vérifie si un projet possède un date
+					checkEndDateTask($idTask)
+					getNumberPeopleTask()
+
+/*** v0.33, Nazmi Aydogdu, 19/02/2015 ******************************/
+1/  Corrections : 
+	-> Mise à jour de ww.css + stacks.css
+	-> Correction de helpers:getStatusTask().
+	-> suppression de core/routes.php et core/helpers.php (doublons, les originaux sont dans core/app)
+
+2/  Maj public/css : ww.css + reset.css
+
+3/  Maj Helpers : création de getTicketForm($ticketableId, $ticketableType) : renvoi le formulaire de création
+		-> requiert ID & Type de l'objet en cours ('project', 'task'). Le type est le nom du model en minuscule.
+		
+4/  Maj views : project.show
+
+5/  Création views : ticket.task.index 
+
+6/  Maj routes.php : ajout de 'task.tickets'
+
+7/  Création controller : TaskTicketController avec @index, @create & @store
+
+8/  Création de app/lib/Validation/TicketCreateValidator
+
+9/  Maj de app/database/migrations : create_tickets -> suppression de title, ajout de timestamps() et author_id
+
+10/ Maj de app/database/seeds/TicketTableSeeder
+
+11/ MAJ de app/lang : fr/public
+
+
+/*** v0.34, Reinhardt Paul, 20/02/2015 ******************************/
+
+1/	Migration : ajout de la colonne public_type dans la table tasks
+	Seed 	  :	Modification de taskTableSeeder (uniquement les task globale)
+
+2/	Modele modification de Task et ProjectType
+		   				de Project : ajout de tasksGlobal(); (tasks retourne aussi les utilisateurs, pour le moment une tâche globale ne possède pas encore d'user)
+
+3/ 	Helpers : 	checkIfTaskExistOnProject($idTask) Permet de savoir si la tâche existe déjà sur le projet
+				checkIfWeCanAddTaskGlobal($idProject) Permet de définir si on peut encore ajouter une tâche globale sur le projet
+
+4/	ProjectGestion : modification @show
+
+5/ 	TaskController@destroy : modification
+
+/*** v0.35, Reinhardt Paul, 23/02/2015 - 24/02/2015 ******************************/
+
+1/	Helpers : Modification de checkIfTaskExistOnProject($idTask, $idProject)
+	A supprimer : checkIfTaskGlobal()
+
+2/ 	Ajout de la table tasks_public et modification de la table tasks
+
+3/ 	Modification de taskcontroller : addPublicTask(), destroy() les tickets sont maintenants supprimé avec la tâche
+					taskGestion
+					ProjectController : destroy() (refaire des tests approfondis (task + tickets))
+	Modification de task.show, task.create et project.show
+
+4/	Création de TaskPublicAdminGestion (update, index, destroy, store) // gestion des tâches publiques
+				TaskPublicAdminGestionInterface
+				TaskPublicAdminController (update, index, destroy, store)
+				TaskPublicUpdateValidator
+				View : admin.taskPublic.index
+
+5/ 	Lors de l'ajout d'une tâche public à un projet, celle ci ne possède désormais qu'une date de création
+
+/*** v0.35, Reinhardt Paul, 25/02/2015 - 27/02/2015 ******************************/
+
+1/ Modification show.project et Model Project (tasks), maintenant que les tâches soit avec ou sans utilisateurs, ils sont dans la même liste (une erreur de ma part)
+
+2/ Modification de ProjectController@destroy, la suppression d'un projet supprime enfin toutes les tâches et tickets liée au tâche. (j'ai fait un test avec 3 tâches possédant deux ticket chacunes, les 3 tâches étant différentes (sans utilisateur, avec, sans date de fin))
+					TaskController@destroy (reprends une des partie de ProjectController@destroy)
+
+3/	Helpers: suppression checkIfTaskGlobal
+			 Modification : getNumberTaskProject (withTrashed)
+
+4/ 	Modification du bouton retour dans la création de ticket sur les tâches (TaskTicketController@index modifié - ticket/task/index modifié), retourne un lien vers le projet
